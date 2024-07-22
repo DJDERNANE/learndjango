@@ -14,3 +14,6 @@ class Product(models.Model):
     brand = models.CharField(max_length=20, choices=Brand.choices)  # Set an appropriate max_length
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
