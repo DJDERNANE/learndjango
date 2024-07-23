@@ -11,6 +11,7 @@ from .serializers import ProductSerializer
 def index(request):
     products = Product.objects.all()
     filterset = ProductFilter(request.GET, queryset=Product.objects.all().order_by('id'))
+    count = filterset.qs.count()
     #serializer =  ProductSerializer(products, many=True)
     page_size = 1
     paginator = PageNumberPagination()
@@ -18,7 +19,7 @@ def index(request):
     result_page = paginator.paginate_queryset(filterset.qs, request)
     serializer = ProductSerializer(result_page, many=True)
     print(serializer)
-    return Response({'data' : serializer.data})
+    return Response({'data' : serializer.data, 'per page' : page_size, 'count' : count})
 
 @api_view(['GET'])
 def get_by_id(request, product_id):
