@@ -41,3 +41,22 @@ def signup(request):
 def userInfo(request):
     user_serializer = UserSerializer(request.user)
     return Response({'user': user_serializer.data})
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserInfo(request):
+    user = request.user
+    user.first_name = request.data['first_name']
+    user.last_name = request.data['last_name']
+    user.username = request.data['username']
+    user.save()
+    user_serializer = UserSerializer(request.user)
+    return Response({'user': user_serializer.data})
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def deleteUser(request):
+    user = request.user
+    user.delete()
+    return Response({'msg': 'user deleted'})
